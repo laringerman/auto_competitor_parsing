@@ -1,7 +1,9 @@
 name: Daily competitor parsing
 
 on: 
-  push:
+    push:
+
+
 
 jobs:
     Daily-Run:
