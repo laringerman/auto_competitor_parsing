@@ -128,10 +128,10 @@ def cat_pars(prod_cat):
     if len(gone_list) > 0:
 
         string_list = [str(element) for element in gone_list]
-        delimiter = "; "
+        delimiter = "; \n"
         result_string = delimiter.join(string_list)
 
-        send_message_tel(f'В категории {prod_cat} закончились следующие товары: {result_string}')
+        send_message_tel(f'В категории {prod_cat} закончились следующие товары: \n{result_string}')
 
 
     if len(arrive_list) > 0:
@@ -140,7 +140,7 @@ def cat_pars(prod_cat):
         delimiter = "; "
         result_string = delimiter.join(string_list)
 
-        send_message_tel(f'В категории {prod_cat} появились следующие товары: {result_string}')
+        send_message_tel(f'В категории {prod_cat} появились следующие товары: \n{result_string}')
         
     if len(gone_list) == 0 and len(arrive_list) == 0:
         send_message_tel(f'В категории {prod_cat} без изменений')
@@ -160,6 +160,7 @@ main_cat_list = [
     'kamery-ptz-kamery'
 ]
 
+#запуск кода
 
 if __name__ == '__main__':
     for proj_cat in main_cat_list:
