@@ -2,6 +2,9 @@ name: Daily competitor parsing
 
 on: 
     push:
+    schedule:
+        - cron: "0 6 * * *" 
+
 
 env:
     GOOGLE_CREDENTIALS:  ${{ secrets.GOOGLE_CREDENTIALS }}
