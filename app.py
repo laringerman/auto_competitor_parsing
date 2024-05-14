@@ -52,7 +52,9 @@ def cat_pars(prod_cat):
         for e in elements:
             #ищем название товара или прочерк (в названии встречаются \t)
             try:
-                element_title = e.find('div', class_='head line-items line-items-middle').text.strip().replace('\t\t\t\t\t\t\t\t\t\t\t\t\t\n\n', ' ')
+                element_title = (e.find('div', class_='head line-items line-items-middle')
+                                 .text.strip()
+                                 .replace('\t\t\t\t\t\t\t\t\t\t\t\t\t\n\n', ' '))
             except:
                 element_title = '-'
 
@@ -128,7 +130,7 @@ def cat_pars(prod_cat):
     if len(gone_list) > 0:
 
         string_list = [str(element) for element in gone_list]
-        delimiter = "; %0A"
+        delimiter = "; %0A "
         result_string = delimiter.join(string_list)
 
         send_message_tel(f'В категории {prod_cat} закончились следующие товары: \n{result_string}')
@@ -137,7 +139,7 @@ def cat_pars(prod_cat):
     if len(arrive_list) > 0:
 
         string_list = [str(element) for element in arrive_list]
-        delimiter = "; %0A"
+        delimiter = "; %0A "
         result_string = delimiter.join(string_list)
 
         send_message_tel(f'В категории {prod_cat} появились следующие товары: \n{result_string}')
