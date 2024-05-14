@@ -130,7 +130,7 @@ def cat_pars(prod_cat):
     if len(gone_list) > 0:
 
         string_list = [str(element) for element in gone_list]
-        delimiter = "; %0A "
+        delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
         send_message_tel(f'В категории {prod_cat} закончились следующие товары: \n{result_string}')
@@ -139,7 +139,7 @@ def cat_pars(prod_cat):
     if len(arrive_list) > 0:
 
         string_list = [str(element) for element in arrive_list]
-        delimiter = "; %0A "
+        delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
         send_message_tel(f'В категории {prod_cat} появились следующие товары: \n{result_string}')
