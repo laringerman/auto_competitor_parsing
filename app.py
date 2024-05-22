@@ -152,7 +152,7 @@ def cat_pars(prod_cat):
     wks.update([df.columns.values.tolist()] + df.values.tolist())
 
 
-#список катогорий
+#список катогорий DIGIS
 main_cat_list = [
     'multimediynye-proektory',
     'svetodiodnye-ekrany-svetodiodnye-ekrany',
@@ -162,12 +162,135 @@ main_cat_list = [
     'kamery-ptz-kamery'
 ]
 
+#список катогорий Hi-tech
+main_cat_list = [
+    'multimediynye-proektory',
+    'svetodiodnye-ekrany-svetodiodnye-ekrany',
+    'displei-displei',
+    'kongress-sistemy',
+    'sistemy-upravleniya-sistemy-upravleniya',
+    'kamery-ptz-kamery'
+]
+
+
+def get_hifi_elements(elements):
+
+    for e in elements:
+    #модель
+        element_model= e.find('h2').text.strip()
+        
+
+        #производитель и описание
+        p_tags = e.find_all('p')
+        #производитель
+        element_factory= p_tags[0].get_text(strip=True).replace('Производитель: ', '')
+
+        #описание
+        try:
+            element_description = p_tags[1].get_text(strip=True)
+        except:
+            element_description = ' - '
+
+        #наличие
+        element_status= e.find('span').text.strip()
+        
+
+        #цена
+        try:
+            element_price= e.find('strong', class_='ss').text.strip()
+            
+        except:
+            element_price= e.find('strong').text.strip()
+
+        data.append({
+        'title': element_factory + ' ' + element_model,
+        'description': element_description,
+        'status': element_status,
+        'price': element_price
+        })
+
+def get_hifi(cat):
+    domen = 'https://hi-tech-media.ru'
+    url = domen + '/equipment/' + cat + '/'
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, 'html.parser')
+    # Найти ul с классом root-item, а затем внутри него найти нужную ссылку
+    root_item_ul = soup.find('ul', class_='root-item')
+    links = root_item_ul.find_all('a')
+    hrefs = [link['href'] for link in links]
+
+    data = []
+    for href in hrefs:
+        url_equipment = domen + href + '?SHOWALL_1=1'
+        res_equipment = requests.get(url_equipment)
+        soup_equipment = BeautifulSoup(res_equipment.text, 'html.parser')
+        elements = soup_equipment.find_all('div', class_='item_body')
+        get_hifi_elements(elements)
+        
+    df = pd.DataFrame(data)
+    df = df[df['status'] == 'В наличии']
+    df['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M')
+
+    wks = sh.worksheet(cat)
+    #сохраняем старую страницу в датафрейм
+    old_df = pd.DataFrame(wks.get_all_records())
+    #собираем список уникальных названий товаров
+    old_title_list = old_df.title.unique()
+    #собираем список уникальных новых товаров
+    new_title_list = df.title.unique()
+    wks.clear()
+    wks.update([df.columns.values.tolist()] + df.values.tolist())
+       
+    s = set(new_title_list)
+    gone_list = [x for x in old_title_list if x not in s]
+
+    #ищем названия, которые есть в новом списке, но нет в старом
+    p = set(old_title_list)
+    arrive_list = [x for x in new_title_list if x not in p]
+
+    if len(gone_list) > 0:
+
+        string_list = [str(element) for element in gone_list]
+        delimiter = "; "
+        result_string = delimiter.join(string_list)
+
+        send_message_tel(f'В категории {cat} закончились следующие товары')
+        send_message_tel(result_string)
+
+
+    if len(arrive_list) > 0:
+
+        string_list = [str(element) for element in arrive_list]
+        delimiter = "; "
+        result_string = delimiter.join(string_list)
+
+        send_message_tel(f'В категории {cat} появились следующие товары')
+        send_message_tel(result_string)
+        
+    if len(gone_list) == 0 and len(arrive_list) == 0:
+        send_message_tel(f'В категории {cat} без изменений')
+    #очищаем лист
+    wks.clear()
+    #загружаем новый натафрейм на страницу
+    wks.update([df.columns.values.tolist()] + df.values.tolist())
+    
+
 #запуск кода
 
 if __name__ == '__main__':
-    send_message_tel('||| Начало нового анализа |||')
+    send_message_tel('||| DIGIS начало нового анализа |||')
 
     for proj_cat in main_cat_list:
         cat_pars(proj_cat)
 
-    send_message_tel('||| Анализ закончен |||')
+    send_message_tel('||| DIGIS анализ закончен |||')
+
+    sh = gc.open('hi-tech_in_stock')
+
+    send_message_tel('||| Hi-tech начало нового анализа |||')
+
+    for cat in main_cat_list:
+        get_hifi(cat)
+    
+    send_message_tel('||| Hi-tech анализ закончен |||')
+
