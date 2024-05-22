@@ -288,7 +288,7 @@ def get_hifi(cat):
     if len(gone_list) > 0:
 
         string_list = [str(element) for element in gone_list]
-        delimiter = "; "
+        delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
         send_message_tel(f'В категории {cat} закончились следующие товары')
@@ -298,7 +298,7 @@ def get_hifi(cat):
     if len(arrive_list) > 0:
 
         string_list = [str(element) for element in arrive_list]
-        delimiter = "; "
+        delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
         send_message_tel(f'В категории {cat} появились следующие товары')
