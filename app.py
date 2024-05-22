@@ -176,8 +176,8 @@ hitech_main_cat = [
     'interaktivnye-ustroystva'
 ]
 
-
-def get_hifi_elements(elements):
+data = []
+def get_hifi_elements(elements, data=data):
 
     for e in elements:
     #модель
