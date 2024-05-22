@@ -176,7 +176,7 @@ hitech_main_cat = [
     'interaktivnye-ustroystva'
 ]
 
-data = []
+data_hitek = []
 
 def get_hifi_elements(elements):
     for e in elements:
@@ -206,7 +206,7 @@ def get_hifi_elements(elements):
         except:
             element_price= e.find('strong').text.strip()
 
-        data.append({
+        data_hitek.append({
         'title': element_factory + ' ' + element_model,
         'description': element_description,
         'status': element_status,
@@ -214,7 +214,7 @@ def get_hifi_elements(elements):
         })
 
 def get_hifi(cat):
-    data = []
+    data_hitek = []
     domen = 'https://hi-tech-media.ru'
     url = domen + '/equipment/' + cat + '/'
     res = requests.get(url)
@@ -232,7 +232,7 @@ def get_hifi(cat):
         elements = soup_equipment.find_all('div', class_='item_body')
         get_hifi_elements(elements)
         
-    df = pd.DataFrame(data)
+    df = pd.DataFrame(data_hitek)
     df = df[df['status'] == 'В наличии']
     df['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M')
 
