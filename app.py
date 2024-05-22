@@ -230,10 +230,42 @@ def get_hifi(cat):
         res_equipment = requests.get(url_equipment)
         soup_equipment = BeautifulSoup(res_equipment.text, 'html.parser')
         elements = soup_equipment.find_all('div', class_='item_body')
-        get_hifi_elements(elements)
+        for e in elements:
+        #модель
+            element_model= e.find('h2').text.strip()
+            
+
+            #производитель и описание
+            p_tags = e.find_all('p')
+            #производитель
+            element_factory= p_tags[0].get_text(strip=True).replace('Производитель: ', '')
+
+            #описание
+            try:
+                element_description = p_tags[1].get_text(strip=True)
+            except:
+                element_description = ' - '
+
+            #наличие
+            element_status= e.find('span').text.strip()
+            
+
+            #цена
+            try:
+                element_price= e.find('strong', class_='ss').text.strip()
+                
+            except:
+                element_price= e.find('strong').text.strip()
+
+            data_hitek.append({
+            'title': element_factory + ' ' + element_model,
+            'description': element_description,
+            'status': element_status,
+            'price': element_price
+            })
         
     df_hitek = pd.DataFrame(data_hitek)
-    df_hitek = df_hitek[df_hitek['status'] == 'В наличии']
+    df_hitek = df_hitek.query('status == "В наличии"')
     df_hitek['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M')
 
     wks = sh.worksheet(cat)
