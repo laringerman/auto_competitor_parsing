@@ -232,9 +232,9 @@ def get_hifi(cat):
         elements = soup_equipment.find_all('div', class_='item_body')
         get_hifi_elements(elements)
         
-    df = pd.DataFrame(data_hitek)
-    df = df[df['status'] == 'В наличии']
-    df['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M')
+    df_hitek = pd.DataFrame(data_hitek)
+    df_hitek = df_hitek[df_hitek['status'] == 'В наличии']
+    df_hitek['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M')
 
     wks = sh.worksheet(cat)
     #сохраняем старую страницу в датафрейм
@@ -242,9 +242,9 @@ def get_hifi(cat):
     #собираем список уникальных названий товаров
     old_title_list = old_df.title.unique()
     #собираем список уникальных новых товаров
-    new_title_list = df.title.unique()
+    new_title_list = df_hitek.title.unique()
     wks.clear()
-    wks.update([df.columns.values.tolist()] + df.values.tolist())
+    wks.update([df_hitek.columns.values.tolist()] + df_hitek.values.tolist())
        
     s = set(new_title_list)
     gone_list = [x for x in old_title_list if x not in s]
@@ -277,7 +277,7 @@ def get_hifi(cat):
     #очищаем лист
     wks.clear()
     #загружаем новый натафрейм на страницу
-    wks.update([df.columns.values.tolist()] + df.values.tolist())
+    wks.update([df_hitek.columns.values.tolist()] + df_hitek.values.tolist())
     
 
 #запуск кода
