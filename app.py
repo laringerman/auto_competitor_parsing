@@ -177,8 +177,8 @@ hitech_main_cat = [
 ]
 
 data = []
-def get_hifi_elements(elements, data=data):
 
+def get_hifi_elements(elements):
     for e in elements:
     #модель
         element_model= e.find('h2').text.strip()
@@ -214,6 +214,7 @@ def get_hifi_elements(elements, data=data):
         })
 
 def get_hifi(cat):
+    data = []
     domen = 'https://hi-tech-media.ru'
     url = domen + '/equipment/' + cat + '/'
     res = requests.get(url)
@@ -223,7 +224,7 @@ def get_hifi(cat):
     links = root_item_ul.find_all('a')
     hrefs = [link['href'] for link in links]
 
-    data = []
+    
     for href in hrefs:
         url_equipment = domen + href + '?SHOWALL_1=1'
         res_equipment = requests.get(url_equipment)
