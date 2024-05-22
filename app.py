@@ -176,42 +176,7 @@ hitech_main_cat = [
     'interaktivnye-ustroystva'
 ]
 
-data_hitek = []
 
-def get_hifi_elements(elements):
-    for e in elements:
-    #модель
-        element_model= e.find('h2').text.strip()
-        
-
-        #производитель и описание
-        p_tags = e.find_all('p')
-        #производитель
-        element_factory= p_tags[0].get_text(strip=True).replace('Производитель: ', '')
-
-        #описание
-        try:
-            element_description = p_tags[1].get_text(strip=True)
-        except:
-            element_description = ' - '
-
-        #наличие
-        element_status= e.find('span').text.strip()
-        
-
-        #цена
-        try:
-            element_price= e.find('strong', class_='ss').text.strip()
-            
-        except:
-            element_price= e.find('strong').text.strip()
-
-        data_hitek.append({
-        'title': element_factory + ' ' + element_model,
-        'description': element_description,
-        'status': element_status,
-        'price': element_price
-        })
 
 def get_hifi(cat):
     data_hitek = []
@@ -291,8 +256,7 @@ def get_hifi(cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        send_message_tel(f'В категории {cat} закончились следующие товары')
-        send_message_tel(result_string)
+        send_message_tel(f'В категории {cat} закончились следующие товары: \n{result_string}')
 
 
     if len(arrive_list) > 0:
@@ -301,8 +265,8 @@ def get_hifi(cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        send_message_tel(f'В категории {cat} появились следующие товары')
-        send_message_tel(result_string)
+        send_message_tel(f'В категории {cat} появились следующие товары: \n{result_string}')
+        
         
     if len(gone_list) == 0 and len(arrive_list) == 0:
         send_message_tel(f'В категории {cat} без изменений')
