@@ -284,7 +284,7 @@ def get_hifi(cat):
 if __name__ == '__main__':
     send_message_tel('||| DIGIS начало нового анализа |||')
 
-    for proj_cat in main_cat:
+    for proj_cat in main_cat_list:
         cat_pars(proj_cat)
 
     send_message_tel('||| DIGIS анализ закончен |||')
