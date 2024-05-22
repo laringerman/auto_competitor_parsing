@@ -163,13 +163,17 @@ main_cat_list = [
 ]
 
 #список катогорий Hi-tech
-main_cat_list = [
-    'multimediynye-proektory',
-    'svetodiodnye-ekrany-svetodiodnye-ekrany',
-    'displei-displei',
-    'kongress-sistemy',
-    'sistemy-upravleniya-sistemy-upravleniya',
-    'kamery-ptz-kamery'
+hitech_main_cat = [
+    'proektory',
+    'svetodiodnye-ekrany',
+    'sistemy-otobrazheniya-informatsii',
+    'kamery',
+    'konferents-sistemy',
+    'videokonferentssvyaz',
+    'akusticheskoe-oborudovanie',
+    'av-kommutatsiya',
+    'oborudovanie-upravleniya',
+    'interaktivnye-ustroystva'
 ]
 
 
@@ -280,7 +284,7 @@ def get_hifi(cat):
 if __name__ == '__main__':
     send_message_tel('||| DIGIS начало нового анализа |||')
 
-    for proj_cat in main_cat_list:
+    for proj_cat in main_cat:
         cat_pars(proj_cat)
 
     send_message_tel('||| DIGIS анализ закончен |||')
@@ -289,7 +293,7 @@ if __name__ == '__main__':
 
     send_message_tel('||| Hi-tech начало нового анализа |||')
 
-    for cat in main_cat_list:
+    for cat in hitech_main_cat:
         get_hifi(cat)
     
     send_message_tel('||| Hi-tech анализ закончен |||')
