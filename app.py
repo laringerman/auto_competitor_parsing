@@ -25,6 +25,7 @@ def send_message_tel(message):
     url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage'
     params = {
         'chat_id': TELEGRAM_CHANNEL_ID,
+        'parse_mode': 'Markdown',
         'text': message
     }
     res = requests.post(url, params=params)
@@ -133,7 +134,7 @@ def cat_pars(prod_cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        send_message_tel(f'В категории {prod_cat} закончились следующие товары: \n{result_string}')
+        digis_cat_text = (f'\nВ категории {prod_cat} закончились следующие товары: \n{result_string}')
 
 
     if len(arrive_list) > 0:
@@ -142,14 +143,15 @@ def cat_pars(prod_cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        send_message_tel(f'В категории {prod_cat} появились следующие товары: \n{result_string}')
+        digis_cat_text = (f'\nВ категории {prod_cat} появились следующие товары: \n{result_string}')
         
     if len(gone_list) == 0 and len(arrive_list) == 0:
-        send_message_tel(f'В категории {prod_cat} без изменений')
+        digis_cat_text = (f'\nВ категории {prod_cat} без изменений')
     #очищаем лист
     wks.clear()
     #загружаем новый натафрейм на страницу
     wks.update([df.columns.values.tolist()] + df.values.tolist())
+    return digis_cat_text
 
 
 #список катогорий DIGIS
@@ -256,7 +258,7 @@ def get_hifi(cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        send_message_tel(f'В категории {cat} закончились следующие товары: \n{result_string}')
+        hitech_cat_text = (f'В категории {cat} закончились следующие товары: \n{result_string}')
 
 
     if len(arrive_list) > 0:
@@ -265,33 +267,34 @@ def get_hifi(cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        send_message_tel(f'В категории {cat} появились следующие товары: \n{result_string}')
+        hitech_cat_text = (f'В категории {cat} появились следующие товары: \n{result_string}')
         
         
     if len(gone_list) == 0 and len(arrive_list) == 0:
-        send_message_tel(f'В категории {cat} без изменений')
+        hitech_cat_text = (f'В категории {cat} без изменений')
     #очищаем лист
     wks.clear()
     #загружаем новый натафрейм на страницу
     wks.update([df_hitek.columns.values.tolist()] + df_hitek.values.tolist())
+    return hitech_cat_text
     
 
 #запуск кода
 
 if __name__ == '__main__':
-    send_message_tel('||| DIGIS начало нового анализа |||')
+    digis_final_text = '*Digis* \n' 
 
     for proj_cat in main_cat_list:
-        cat_pars(proj_cat)
+        digis_final_text += cat_pars(proj_cat)
 
-    send_message_tel('||| DIGIS анализ закончен |||')
+    send_message_tel(digis_final_text)
 
     sh = gc.open('hi-tech_in_stock')
 
-    send_message_tel('||| Hi-tech начало нового анализа |||')
+    Hitech_final_text = '*Hi-tech-media* \n' 
 
     for cat in hitech_main_cat:
-        get_hifi(cat)
+        Hitech_final_text += get_hifi(cat)
     
-    send_message_tel('||| Hi-tech анализ закончен |||')
+    send_message_tel(Hitech_final_text)
 
