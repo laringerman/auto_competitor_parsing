@@ -232,8 +232,9 @@ def get_hifi(cat):
             })
         
     df_hitek = pd.DataFrame(data_hitek)
-    df_hitek = df_hitek.query('status == "В наличии"')
-    df_hitek['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M')
+    df_hitek = df_hitek.query('status == "В наличии"').copy()
+
+    df_hitek.loc[:, 'timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M')
 
     wks = sh.worksheet(cat)
     #сохраняем старую страницу в датафрейм
@@ -258,7 +259,7 @@ def get_hifi(cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        hitech_cat_text = (f'В категории {cat} закончились следующие товары: \n{result_string}')
+        hitech_cat_text = (f'\nВ категории {cat} закончились следующие товары: \n{result_string}')
 
 
     if len(arrive_list) > 0:
@@ -267,11 +268,11 @@ def get_hifi(cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        hitech_cat_text = (f'В категории {cat} появились следующие товары: \n{result_string}')
+        hitech_cat_text = (f'\nВ категории {cat} появились следующие товары: \n{result_string}')
         
         
     if len(gone_list) == 0 and len(arrive_list) == 0:
-        hitech_cat_text = (f'В категории {cat} без изменений')
+        hitech_cat_text = (f'\nВ категории {cat} без изменений')
     #очищаем лист
     wks.clear()
     #загружаем новый натафрейм на страницу
@@ -291,10 +292,10 @@ if __name__ == '__main__':
 
     sh = gc.open('hi-tech_in_stock')
 
-    Hitech_final_text = '*Hi-tech-media* \n' 
+    hitech_final_text = '*Hi-tech-media* \n' 
 
     for cat in hitech_main_cat:
-        Hitech_final_text += get_hifi(cat)
+        hitech_final_text += get_hifi(cat)
     
-    send_message_tel(Hitech_final_text)
+    send_message_tel(hitech_final_text)
 
