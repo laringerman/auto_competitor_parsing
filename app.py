@@ -134,7 +134,7 @@ def cat_pars(prod_cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        digis_cat_text = (f'\nВ категории {prod_cat} закончились следующие товары: \n{result_string}')
+        digis_cat_text = (f'\n \nВ категории *{prod_cat}* закончились следующие товары: \n{result_string}')
 
 
     if len(arrive_list) > 0:
@@ -143,10 +143,10 @@ def cat_pars(prod_cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        digis_cat_text = (f'\nВ категории {prod_cat} появились следующие товары: \n{result_string}')
+        digis_cat_text = (f'\n \nВ категории *{prod_cat}* появились следующие товары: \n{result_string}')
         
     if len(gone_list) == 0 and len(arrive_list) == 0:
-        digis_cat_text = (f'\nВ категории {prod_cat} без изменений')
+        digis_cat_text = (f'\n \nВ категории *{prod_cat}* без изменений')
     #очищаем лист
     wks.clear()
     #загружаем новый натафрейм на страницу
@@ -259,7 +259,7 @@ def get_hifi(cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        hitech_cat_text = (f'\nВ категории {cat} закончились следующие товары: \n{result_string}')
+        hitech_cat_text = (f'\n\nВ категории *{cat}* закончились следующие товары: \n{result_string}')
 
 
     if len(arrive_list) > 0:
@@ -268,11 +268,11 @@ def get_hifi(cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        hitech_cat_text = (f'\nВ категории {cat} появились следующие товары: \n{result_string}')
+        hitech_cat_text = (f'\n\nВ категории *{cat}* появились следующие товары: \n{result_string}')
         
         
     if len(gone_list) == 0 and len(arrive_list) == 0:
-        hitech_cat_text = (f'\nВ категории {cat} без изменений')
+        hitech_cat_text = (f'\n\nВ категории *{cat}* без изменений')
     #очищаем лист
     wks.clear()
     #загружаем новый натафрейм на страницу
@@ -283,7 +283,7 @@ def get_hifi(cat):
 #запуск кода
 
 if __name__ == '__main__':
-    digis_final_text = '*Digis* \n' 
+    digis_final_text = '*Digis*' 
 
     for proj_cat in main_cat_list:
         digis_final_text += cat_pars(proj_cat)
@@ -292,7 +292,7 @@ if __name__ == '__main__':
 
     sh = gc.open('hi-tech_in_stock')
 
-    hitech_final_text = '*Hi-tech-media* \n' 
+    hitech_final_text = '*Hi-tech-media*' 
 
     for cat in hitech_main_cat:
         hitech_final_text += get_hifi(cat)
