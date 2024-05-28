@@ -294,9 +294,9 @@ def chech_jobs(elements):
 
 
     #собираем список уникальных названий вакансий
-    old_jobs_list = old_jobs.title.unique()
+    old_jobs_list = old_jobs.job_title.unique()
     #собираем список уникальных новых вакансий
-    new_jobs_list = vac_df.title.unique()
+    new_jobs_list = vac_df.job_title.unique()
 
     s = set(new_jobs_list)
     gone_list = [x for x in old_jobs_list if x not in s]
