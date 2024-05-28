@@ -281,6 +281,7 @@ def get_hifi(cat):
 
 # создание списка вакансий и отправлка его в гугл шит
 def chech_jobs(elements):
+    vac_list = []
     for e in elements:
         vac_list.append(e.text.strip())
     vac_df = pd.DataFrame(vac_list)
