@@ -13,6 +13,7 @@ load_dotenv()
 google_credentials = os.getenv('GOOGLE_CREDENTIALS')
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID')
+YOUTUBE_KEY = os.getenv('YOUTUBE_KEY')
 
 # загружаем гугл шит
 credentials = ast.literal_eval(google_credentials)
@@ -351,6 +352,31 @@ def get_digis_jobs():
 
     return chech_jobs(elements)
 
+# получение количество подписчиков в телеграм:
+def get_telegram_subscribers(channel_username):
+    url = f'https://t.me/{channel_username}'
+    response = requests.get(url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        subscribers = soup.find('div', {'class': 'tgme_page_extra'}).text.replace(' subscribers', '')
+        text_message = f'\n\nКоличество подписчиков в Телеграм: {subscribers}'
+        return text_message
+    else:
+        text_message = "Не удалось получить данные о телеграмканале"
+        return text_message 
+    
+# получение количество подписчиков в ютьюб:
+def get_youtube_info(channel_id):
+    url = f'https://www.googleapis.com/youtube/v3/channels?part=statistics&id={channel_id}&key={YOUTUBE_KEY}'
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        views = data['items'][0]['statistics']['viewCount']
+        subscribers = data['items'][0]['statistics']['subscriberCount']
+        text = f'\n\nНа *ютьюб канале* подписчиков - {subscribers}, количество просмотров {views}.'
+        return text
+    else:
+        text = '\n\nНе получилось получить информацию о *ютьюб канале*'
 
 #запуск кода
 
@@ -361,6 +387,8 @@ if __name__ == '__main__':
         digis_final_text += cat_pars(proj_cat)
 
     digis_final_text += get_digis_jobs()
+    digis_final_text += get_telegram_subscribers('digisgroup')
+    digis_final_text += get_youtube_info('UCnisrWW0YJBVV4w9Mo5cfdg')
 
     send_message_tel(digis_final_text)
 
@@ -372,5 +400,7 @@ if __name__ == '__main__':
         hitech_final_text += get_hifi(cat)
     
     hitech_final_text += get_hitech_jobs()
+    hitech_final_text += get_telegram_subscribers('htmedia')
+    hitech_final_text += get_youtube_info('UChHSr-49b14rYGPbXlyImkw')
     send_message_tel(hitech_final_text)
 
