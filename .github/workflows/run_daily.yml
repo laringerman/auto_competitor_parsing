@@ -10,6 +10,7 @@ env:
     GOOGLE_CREDENTIALS:  ${{ secrets.GOOGLE_CREDENTIALS }}
     TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
     TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+    YOUTUBE_KEY: ${{ secrets.YOUTUBE_KEY }}
     
 
 jobs:
