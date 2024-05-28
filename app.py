@@ -373,10 +373,10 @@ def get_youtube_info(channel_id):
         data = response.json()
         views = data['items'][0]['statistics']['viewCount']
         subscribers = data['items'][0]['statistics']['subscriberCount']
-        text = f'\n\nНа *ютьюб канале* подписчиков - {subscribers}, количество просмотров {views}.'
-        return text
+        text_message = f'\n\nНа *ютьюб канале* подписчиков - {subscribers}, количество просмотров {views}.'
+        return text_message
     else:
-        text = '\n\nНе получилось получить информацию о *ютьюб канале*'
+        text_message = '\n\nНе получилось получить информацию о *ютьюб канале*'
 
 #запуск кода
 
@@ -388,7 +388,7 @@ if __name__ == '__main__':
 
     digis_final_text += get_digis_jobs()
     digis_final_text += get_telegram_subscribers('digisgroup')
-    digis_final_text += get_youtube_info('UCnisrWW0YJBVV4w9Mo5cfdg')
+    digis_final_text += get_youtube_info(channel_id='UCnisrWW0YJBVV4w9Mo5cfdg')
 
     send_message_tel(digis_final_text)
 
@@ -401,6 +401,6 @@ if __name__ == '__main__':
     
     hitech_final_text += get_hitech_jobs()
     hitech_final_text += get_telegram_subscribers('htmedia')
-    hitech_final_text += get_youtube_info('UChHSr-49b14rYGPbXlyImkw')
+    hitech_final_text += get_youtube_info(channel_id='UChHSr-49b14rYGPbXlyImkw')
     send_message_tel(hitech_final_text)
 
