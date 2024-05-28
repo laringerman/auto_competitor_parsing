@@ -339,7 +339,7 @@ def get_hitech_jobs():
     soup = BeautifulSoup(res.text, features="html.parser")
     #находим таблицу с вакансиями
     elements = soup.find('div', class_='news-list')
-
+    elements = elements.find_all('h2')
     return chech_jobs(elements)
 
 def get_digis_jobs():
