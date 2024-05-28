@@ -340,6 +340,8 @@ def get_hitech_jobs():
     #находим таблицу с вакансиями
     elements = soup.find('div', class_='news-list')
 
+    return chech_jobs(elements)
+
 def get_digis_jobs():
     res = requests.get('https://digis.ru/about/vacancies/')
     #обрабатываем супом
