@@ -278,7 +278,76 @@ def get_hifi(cat):
     #загружаем новый натафрейм на страницу
     wks.update([df_hitek.columns.values.tolist()] + df_hitek.values.tolist())
     return hitech_cat_text
-    
+
+# создание списка вакансий и отправлка его в гугл шит
+def chech_jobs(elements):
+    for e in elements:
+        vac_list.append(e.text.strip())
+    vac_df = pd.DataFrame(vac_list)
+    vac_df.columns = ['job_title']
+    vac_df
+
+    #загружаем страницу из гугл шитс с названием вакансий
+    wks = sh.worksheet('jobs')
+    old_jobs = pd.DataFrame(wks.get_all_records())
+
+
+    #собираем список уникальных названий вакансий
+    old_jobs_list = old_jobs.title.unique()
+    #собираем список уникальных новых вакансий
+    new_jobs_list = vac_df.title.unique()
+
+    s = set(new_jobs_list)
+    gone_list = [x for x in old_jobs_list if x not in s]
+
+    #ищем названия, которые есть в новом списке, но нет в старом
+    p = set(old_jobs_list)
+    arrive_list = [x for x in new_jobs_list if x not in p]
+
+    if len(gone_list) > 0:
+
+        string_list = [str(element) for element in gone_list]
+        delimiter = ";\n"
+        result_string = delimiter.join(string_list)
+
+        cat_text = (f'\n \nНовости *вакансий*. Перестали искать: \n{result_string}')
+
+
+    if len(arrive_list) > 0:
+
+        string_list = [str(element) for element in arrive_list]
+        delimiter = ";\n"
+        result_string = delimiter.join(string_list)
+
+        cat_text = (f'\n \nНовости *вакансий*. Начали искать: \n{result_string}')
+        
+    if len(gone_list) == 0 and len(arrive_list) == 0:
+        cat_text = (f'\n \nВ *вакансиях* без изменений.')
+    #очищаем лист
+    wks.clear()
+    #загружаем новый натафрейм на страницу
+    wks.update([vac_df.columns.values.tolist()] + vac_df.values.tolist())
+
+    return cat_text
+
+
+#поиск новых вакансий hitech
+def get_hitech_jobs():
+    res = requests.get('https://hi-tech-media.ru/about/vacancies/')
+    #обрабатываем супом
+    soup = BeautifulSoup(res.text, features="html.parser")
+    #находим таблицу с вакансиями
+    elements = soup.find('div', class_='news-list')
+
+def get_digis_jobs():
+    res = requests.get('https://digis.ru/about/vacancies/')
+    #обрабатываем супом
+    soup = BeautifulSoup(res.text, features="html.parser")
+    #находим все карточки товаров
+    elements = soup.find_all('div', class_='vacancy__header-bottom')
+
+    return chech_jobs(elements)
+
 
 #запуск кода
 
@@ -287,6 +356,8 @@ if __name__ == '__main__':
 
     for proj_cat in main_cat_list:
         digis_final_text += cat_pars(proj_cat)
+
+    digis_final_text += get_digis_jobs()
 
     send_message_tel(digis_final_text)
 
@@ -297,5 +368,6 @@ if __name__ == '__main__':
     for cat in hitech_main_cat:
         hitech_final_text += get_hifi(cat)
     
+    hitech_final_text += get_hitech_jobs()
     send_message_tel(hitech_final_text)
 
