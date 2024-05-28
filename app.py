@@ -359,10 +359,10 @@ def get_telegram_subscribers(channel_username):
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
         subscribers = soup.find('div', {'class': 'tgme_page_extra'}).text.replace(' subscribers', '')
-        text_message = f'\n\nКоличество подписчиков в *Телеграм*: {subscribers}'
+        text_message = f'\n\nКоличество подписчиков в *Телеграм* - {subscribers}.'
         return text_message
     else:
-        text_message = "Не удалось получить данные о *телеграмканале*"
+        text_message = "Не удалось получить данные о *телеграмканале*."
         return text_message 
     
 # получение количество подписчиков в ютьюб:
@@ -373,10 +373,10 @@ def get_youtube_info(channel_id):
         data = response.json()
         views = data['items'][0]['statistics']['viewCount']
         subscribers = data['items'][0]['statistics']['subscriberCount']
-        text_message = f'\n\nНа *ютьюб канале* подписчиков - {subscribers}, количество просмотров {views}.'
+        text_message = f'\n\nНа *ютьюб канале* подписчиков - {subscribers}, количество просмотров - {views}.'
         return text_message
     else:
-        text_message = '\n\nНе получилось получить информацию о *ютьюб канале*'
+        text_message = '\n\nНе получилось получить информацию о *ютьюб канале*.'
         return text_message
 
 #запуск кода
