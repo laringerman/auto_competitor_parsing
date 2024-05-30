@@ -379,6 +379,18 @@ def get_youtube_info(channel_id):
         text_message = '\n\nНе получилось получить информацию о *ютьюб канале*.'
         return text_message
 
+#проверка длины кода и отправка сообщений не более 4096 символов
+def chech_message_length_and_send(text):
+    if len(text) <= 4096:
+        send_message_tel(text)
+    else:
+        while len(text) > 4096:
+            send_message_tel(text[:4095])
+            text = text[4095:]
+        send_message_tel(text)
+
+
+
 #запуск кода
 
 if __name__ == '__main__':
@@ -391,7 +403,7 @@ if __name__ == '__main__':
     digis_final_text += get_telegram_subscribers('digisgroup')
     digis_final_text += get_youtube_info(channel_id='UCnisrWW0YJBVV4w9Mo5cfdg')
 
-    send_message_tel(digis_final_text)
+    chech_message_length_and_send(digis_final_text)
 
     sh = gc.open('hi-tech_in_stock')
 
@@ -403,5 +415,5 @@ if __name__ == '__main__':
     hitech_final_text += get_hitech_jobs()
     hitech_final_text += get_telegram_subscribers('htmedia')
     hitech_final_text += get_youtube_info(channel_id='UChHSr-49b14rYGPbXlyImkw')
-    send_message_tel(hitech_final_text)
+    chech_message_length_and_send(hitech_final_text)
 
