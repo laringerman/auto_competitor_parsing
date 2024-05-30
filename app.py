@@ -394,17 +394,26 @@ def chech_message_length_and_send(text):
 #запуск кода
 
 if __name__ == '__main__':
+    # начинаем сообщение с названия компании
     digis_final_text = '*Digis*' 
 
+    # добавляем список изменени в каждой катогории
     for proj_cat in main_cat_list:
         digis_final_text += cat_pars(proj_cat)
 
+    # добавляем изменения в вакансиях
     digis_final_text += get_digis_jobs()
+
+    # добавляем количество подписчиков в телеграме
     digis_final_text += get_telegram_subscribers('digisgroup')
+    
+    # добавляем количество подпсичиков и просмотров на ютьюбе
     digis_final_text += get_youtube_info(channel_id='UCnisrWW0YJBVV4w9Mo5cfdg')
 
+    # отправляем сообщения по не более 4096 символов
     chech_message_length_and_send(digis_final_text)
 
+    # подклчаемся к другому документу в гугл шитах
     sh = gc.open('hi-tech_in_stock')
 
     hitech_final_text = '*Hi-tech-media*' 
