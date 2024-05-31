@@ -129,13 +129,16 @@ def cat_pars(prod_cat):
     p = set(old_title_list)
     arrive_list = [x for x in new_title_list if x not in p]
 
+    # Инициализируем переменную для хранения текста
+    digis_cat_text = ''
+
     if len(gone_list) > 0:
 
         string_list = [str(element) for element in gone_list]
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        digis_cat_text = (f'\n \nВ категории *{prod_cat}* закончились следующие товары: \n{result_string}')
+        digis_cat_text += (f'\n \nВ категории *{prod_cat}* закончились следующие товары: \n{result_string}')
 
 
     if len(arrive_list) > 0:
@@ -144,7 +147,7 @@ def cat_pars(prod_cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        digis_cat_text = (f'\n \nВ категории *{prod_cat}* появились следующие товары: \n{result_string}')
+        digis_cat_text += (f'\n \nВ категории *{prod_cat}* появились следующие товары: \n{result_string}')
         
     if len(gone_list) == 0 and len(arrive_list) == 0:
         digis_cat_text = (f'\n \nВ категории *{prod_cat}* без изменений')
@@ -254,13 +257,16 @@ def get_hifi(cat):
     p = set(old_title_list)
     arrive_list = [x for x in new_title_list if x not in p]
 
+    # Инициализируем переменную для хранения текста
+    hitech_cat_text = '' 
+
     if len(gone_list) > 0:
 
         string_list = [str(element) for element in gone_list]
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        hitech_cat_text = (f'\n\nВ категории *{cat}* закончились следующие товары: \n{result_string}')
+        hitech_cat_text += (f'\n\nВ категории *{cat}* закончились следующие товары: \n{result_string}')
 
 
     if len(arrive_list) > 0:
@@ -269,7 +275,7 @@ def get_hifi(cat):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        hitech_cat_text = (f'\n\nВ категории *{cat}* появились следующие товары: \n{result_string}')
+        hitech_cat_text += (f'\n\nВ категории *{cat}* появились следующие товары: \n{result_string}')
         
         
     if len(gone_list) == 0 and len(arrive_list) == 0:
@@ -306,13 +312,15 @@ def chech_jobs(elements):
     p = set(old_jobs_list)
     arrive_list = [x for x in new_jobs_list if x not in p]
 
+    # Инициализируем переменную для хранения текста
+    cat_text = ''   
     if len(gone_list) > 0:
 
         string_list = [str(element) for element in gone_list]
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        cat_text = (f'\n \nНовости *вакансий*. Перестали искать: \n{result_string}')
+        cat_text += (f'\n \nНовости *вакансий*. Перестали искать: \n{result_string}')
 
 
     if len(arrive_list) > 0:
@@ -321,7 +329,7 @@ def chech_jobs(elements):
         delimiter = ";\n"
         result_string = delimiter.join(string_list)
 
-        cat_text = (f'\n \nНовости *вакансий*. Начали искать: \n{result_string}')
+        cat_text += (f'\n \nНовости *вакансий*. Начали искать: \n{result_string}')
         
     if len(gone_list) == 0 and len(arrive_list) == 0:
         cat_text = (f'\n \nВ *вакансиях* без изменений.')
